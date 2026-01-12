@@ -1,0 +1,24 @@
+# robots.txt for Obscene Maids
+# Allow all search engines to crawl
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://obscenemaids.com/sitemap.xml
+
+# Allow AI search bots
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /

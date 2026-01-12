@@ -1,0 +1,814 @@
+import React, { useState, useEffect } from 'react';
+import { Check, Shield, CreditCard, MapPin, Star, Users, Lock, Zap, Clock, Award } from 'lucide-react';
+
+export default function ObsceneMaidsLanding() {
+  const [email, setEmail] = useState('');
+  const [city, setCity] = useState('');
+  const [income, setIncome] = useState('');
+  const [frequency, setFrequency] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [waitlistCount, setWaitlistCount] = useState(947);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    
+    // API call to subscribe
+    try {
+      const response = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email,
+          type: 'customer',
+          city,
+          income,
+          frequency,
+          utmSource: new URLSearchParams(window.location.search).get('utm_source'),
+          utmMedium: new URLSearchParams(window.location.search).get('utm_medium'),
+          utmCampaign: new URLSearchParams(window.location.search).get('utm_campaign'),
+        })
+      });
+      
+      const data = await response.json();
+      
+      if (data.success) {
+        setSubmitted(true);
+        setWaitlistCount(data.waitlistPosition || waitlistCount + 1);
+      }
+    } catch (error) {
+      console.error('Subscription failed:', error);
+      alert('Something went wrong. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <div className="bg-black text-white font-serif overflow-x-hidden">
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap');
+        
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+        
+        body {
+          font-family: 'Montserrat', sans-serif;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+        }
+        
+        .font-serif {
+          font-family: 'Cormorant Garamond', serif;
+        }
+        
+        .font-sans {
+          font-family: 'Montserrat', sans-serif;
+        }
+        
+        .gold-gradient {
+          background: linear-gradient(135deg, #D4AF37 0%, #F4D03F 50%, #C5A028 100%);
+        }
+        
+        .crimson-gradient {
+          background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%);
+        }
+        
+        .text-gold {
+          color: #D4AF37;
+        }
+        
+        .text-crimson {
+          color: #DC143C;
+        }
+        
+        .border-gold {
+          border-color: #D4AF37;
+        }
+        
+        .bg-gold {
+          background-color: #D4AF37;
+        }
+        
+        .bg-crimson {
+          background-color: #8B0000;
+        }
+        
+        .grain {
+          position: relative;
+        }
+        
+        .grain::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='3.5' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+          pointer-events: none;
+        }
+        
+        .animate-fade-in {
+          animation: fadeIn 0.8s ease-out forwards;
+        }
+        
+        .animate-slide-up {
+          animation: slideUp 0.8s ease-out forwards;
+        }
+        
+        .animate-slide-in-left {
+          animation: slideInLeft 1s ease-out forwards;
+        }
+        
+        .animate-slide-in-right {
+          animation: slideInRight 1s ease-out forwards;
+        }
+        
+        .delay-100 {
+          animation-delay: 0.1s;
+        }
+        
+        .delay-200 {
+          animation-delay: 0.2s;
+        }
+        
+        .delay-300 {
+          animation-delay: 0.3s;
+        }
+        
+        .delay-400 {
+          animation-delay: 0.4s;
+        }
+        
+        .delay-500 {
+          animation-delay: 0.5s;
+        }
+        
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
+        
+        @keyframes slideUp {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        @keyframes slideInLeft {
+          from {
+            opacity: 0;
+            transform: translateX(-50px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+        
+        @keyframes slideInRight {
+          from {
+            opacity: 0;
+            transform: translateX(50px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+        
+        .shimmer {
+          position: relative;
+          overflow: hidden;
+        }
+        
+        .shimmer::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+          animation: shimmer 3s infinite;
+        }
+        
+        @keyframes shimmer {
+          0% {
+            left: -100%;
+          }
+          100% {
+            left: 100%;
+          }
+        }
+        
+        .hover-lift {
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .hover-lift:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 20px 40px rgba(212, 175, 55, 0.3);
+        }
+        
+        input, select {
+          background: rgba(255, 255, 255, 0.05);
+          border: 1px solid rgba(212, 175, 55, 0.3);
+          color: white;
+          transition: all 0.3s ease;
+        }
+        
+        input:focus, select:focus {
+          outline: none;
+          border-color: #D4AF37;
+          background: rgba(255, 255, 255, 0.08);
+          box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+        }
+        
+        input::placeholder {
+          color: rgba(255, 255, 255, 0.5);
+        }
+        
+        select option {
+          background: #1a1a1a;
+          color: white;
+        }
+      `}</style>
+
+      {/* Fixed Header */}
+      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-black/95 backdrop-blur-lg shadow-lg' : 'bg-transparent'}`}>
+        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <div className="w-10 h-10 gold-gradient rounded-full flex items-center justify-center">
+              <Star className="w-6 h-6 text-black" />
+            </div>
+            <h1 className="font-serif text-2xl font-bold text-gold tracking-wider">
+              OBSCENE MAIDS
+            </h1>
+          </div>
+          <a 
+            href="#waitlist" 
+            className="font-sans text-sm font-medium px-6 py-2 gold-gradient text-black rounded-full hover:shadow-lg hover:shadow-gold/50 transition-all duration-300"
+          >
+            Join Waitlist
+          </a>
+        </div>
+      </header>
+
+      {/* Hero Section */}
+      <section className="relative min-h-screen flex items-center justify-center grain overflow-hidden pt-20">
+        {/* Background decorative elements */}
+        <div className="absolute top-20 right-10 w-96 h-96 gold-gradient opacity-10 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-20 left-10 w-80 h-80 crimson-gradient opacity-10 rounded-full blur-3xl animate-pulse" style={{animationDelay: '1s'}}></div>
+        
+        <div className="max-w-6xl mx-auto px-6 text-center z-10">
+          {/* Gold accent bar */}
+          <div className="w-24 h-1 gold-gradient mx-auto mb-8 animate-slide-up"></div>
+          
+          {/* Main headline */}
+          <h2 className="font-serif text-7xl md:text-8xl font-bold mb-6 animate-fade-in">
+            <span className="text-gold">YOUR TIME</span>
+            <br />
+            <span className="text-white">IS VALUABLE</span>
+          </h2>
+          
+          <p className="font-sans text-xl md:text-2xl text-gray-300 mb-4 max-w-3xl mx-auto animate-slide-up delay-100">
+            Las Vegas' most <span className="text-gold font-semibold">exclusive</span> cleaning service
+          </p>
+          
+          <p className="font-sans text-base md:text-lg text-gray-400 mb-12 max-w-2xl mx-auto animate-slide-up delay-200">
+            Premium topless cleaning for discerning clients who value discretion, professionalism, and quality
+          </p>
+          
+          {/* Social proof */}
+          <div className="flex items-center justify-center space-x-8 mb-12 animate-slide-up delay-300">
+            <div className="flex items-center space-x-2">
+              <Users className="w-5 h-5 text-gold" />
+              <span className="font-sans text-sm text-gray-300">
+                <span className="text-gold font-bold">{waitlistCount.toLocaleString()}</span> on waitlist
+              </span>
+            </div>
+            <div className="w-1 h-1 bg-gold rounded-full"></div>
+            <div className="flex items-center space-x-2">
+              <Shield className="w-5 h-5 text-gold" />
+              <span className="font-sans text-sm text-gray-300">
+                <span className="text-gold font-bold">$2M</span> insured
+              </span>
+            </div>
+            <div className="w-1 h-1 bg-gold rounded-full"></div>
+            <div className="flex items-center space-x-2">
+              <Award className="w-5 h-5 text-gold" />
+              <span className="font-sans text-sm text-gray-300">
+                <span className="text-gold font-bold">Licensed</span> & Legal
+              </span>
+            </div>
+          </div>
+          
+          {/* CTA Button */}
+          <a 
+            href="#waitlist" 
+            className="inline-block font-sans text-lg font-semibold px-12 py-4 gold-gradient text-black rounded-full hover:shadow-2xl hover:shadow-gold/50 transition-all duration-300 shimmer animate-slide-up delay-400"
+          >
+            Join Exclusive Waitlist
+          </a>
+          
+          <p className="font-sans text-sm text-gray-500 mt-6 animate-slide-up delay-500">
+            Launching February 2025 • First 100 clients get 20% off
+          </p>
+        </div>
+        
+        {/* Scroll indicator */}
+        <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+          <div className="w-6 h-10 border-2 border-gold rounded-full flex items-start justify-center p-2">
+            <div className="w-1.5 h-3 bg-gold rounded-full animate-pulse"></div>
+          </div>
+        </div>
+      </section>
+
+      {/* Value Proposition Section */}
+      <section className="py-24 bg-gradient-to-b from-black via-gray-900 to-black">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <h3 className="font-serif text-5xl md:text-6xl font-bold text-gold mb-4">
+              The Math Is Simple
+            </h3>
+            <p className="font-sans text-xl text-gray-300 max-w-3xl mx-auto">
+              If you earn $250K+, your time is worth <span className="text-gold font-bold">$125/hour</span>
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8 mb-16">
+            <div className="bg-gradient-to-br from-gray-900 to-black border border-gold/20 rounded-2xl p-8 hover-lift">
+              <div className="text-6xl font-bold text-gold mb-4">10</div>
+              <div className="font-sans text-lg text-gray-300">
+                Hours per month spent on household tasks
+              </div>
+            </div>
+            
+            <div className="bg-gradient-to-br from-gray-900 to-black border border-gold/20 rounded-2xl p-8 hover-lift">
+              <div className="text-6xl font-bold text-crimson mb-4">$1,250</div>
+              <div className="font-sans text-lg text-gray-300">
+                Lost productivity value every month
+              </div>
+            </div>
+            
+            <div className="bg-gradient-to-br from-gray-900 to-black border border-gold/20 rounded-2xl p-8 hover-lift">
+              <div className="text-6xl font-bold text-gold mb-4">$130</div>
+              <div className="font-sans text-lg text-gray-300">
+                Per hour for our premium service
+              </div>
+            </div>
+          </div>
+
+          <div className="text-center">
+            <p className="font-serif text-2xl text-gray-300 mb-8">
+              Reclaim your time. <span className="text-gold">Focus on what matters.</span>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section className="py-24 bg-black">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <h3 className="font-serif text-5xl md:text-6xl font-bold text-white mb-4">
+              Why <span className="text-gold">Obscene Maids</span>
+            </h3>
+            <p className="font-sans text-xl text-gray-400">
+              Professional. Discrete. Unforgettable.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[
+              {
+                icon: Shield,
+                title: 'Background Checked',
+                description: 'Every contractor undergoes thorough national background checks before approval'
+              },
+              {
+                icon: Lock,
+                title: 'Complete Privacy',
+                description: 'Strict NDAs, no-camera policy, and encrypted data. Your discretion is guaranteed'
+              },
+              {
+                icon: CreditCard,
+                title: 'Secure Payments',
+                description: 'Book and pay online through our encrypted platform. No cash, no awkwardness'
+              },
+              {
+                icon: MapPin,
+                title: 'GPS Safety',
+                description: 'Real-time tracking and 24/7 support during every service for your peace of mind'
+              },
+              {
+                icon: Clock,
+                title: 'Flexible Scheduling',
+                description: 'Book same-day or plan ahead. Cancel anytime with 24-hour notice'
+              },
+              {
+                icon: Star,
+                title: '$2M Coverage',
+                description: 'Fully licensed and insured with comprehensive liability protection'
+              }
+            ].map((feature, index) => (
+              <div 
+                key={index}
+                className="bg-gradient-to-br from-gray-900 to-black border border-gold/10 rounded-2xl p-8 hover:border-gold/30 transition-all duration-300 hover-lift"
+              >
+                <div className="w-14 h-14 gold-gradient rounded-full flex items-center justify-center mb-6">
+                  <feature.icon className="w-7 h-7 text-black" />
+                </div>
+                <h4 className="font-sans text-xl font-bold text-white mb-3">
+                  {feature.title}
+                </h4>
+                <p className="font-sans text-gray-400 leading-relaxed">
+                  {feature.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Pricing Section */}
+      <section className="py-24 bg-gradient-to-b from-black via-gray-900 to-black">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <h3 className="font-serif text-5xl md:text-6xl font-bold text-white mb-4">
+              Transparent <span className="text-gold">Pricing</span>
+            </h3>
+            <p className="font-sans text-xl text-gray-400">
+              No hidden fees. No surprises. Just exceptional service.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-4 gap-6 max-w-6xl mx-auto">
+            {[
+              {
+                name: 'Hourly',
+                price: '$130',
+                unit: 'per hour',
+                description: 'Perfect for one-time bookings',
+                popular: false
+              },
+              {
+                name: 'Weekly',
+                price: '$260',
+                unit: 'per week',
+                description: '2 hours • Save 8%',
+                popular: true
+              },
+              {
+                name: 'Monthly',
+                price: '$208',
+                unit: 'per month',
+                description: '8 hours total • Save 20%',
+                popular: false
+              },
+              {
+                name: 'Premium',
+                price: '$300',
+                unit: 'per hour',
+                description: 'Exclusive contractors',
+                popular: false
+              }
+            ].map((plan, index) => (
+              <div 
+                key={index}
+                className={`relative bg-gradient-to-br from-gray-900 to-black rounded-2xl p-8 hover-lift ${
+                  plan.popular ? 'border-2 border-gold' : 'border border-gold/20'
+                }`}
+              >
+                {plan.popular && (
+                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                    <div className="gold-gradient text-black text-xs font-bold px-4 py-1 rounded-full font-sans">
+                      MOST POPULAR
+                    </div>
+                  </div>
+                )}
+                <div className="text-center">
+                  <div className="font-sans text-sm text-gray-400 uppercase tracking-wider mb-2">
+                    {plan.name}
+                  </div>
+                  <div className="font-serif text-5xl font-bold text-gold mb-1">
+                    {plan.price}
+                  </div>
+                  <div className="font-sans text-sm text-gray-500 mb-4">
+                    {plan.unit}
+                  </div>
+                  <div className="font-sans text-sm text-gray-400">
+                    {plan.description}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="text-center mt-12">
+            <p className="font-sans text-sm text-gray-500">
+              All plans include background-checked contractors, full insurance, and 24/7 support
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Waitlist Form Section */}
+      <section id="waitlist" className="py-24 bg-black grain">
+        <div className="max-w-2xl mx-auto px-6">
+          {!submitted ? (
+            <>
+              <div className="text-center mb-12">
+                <div className="w-16 h-1 gold-gradient mx-auto mb-8"></div>
+                <h3 className="font-serif text-5xl md:text-6xl font-bold text-white mb-4">
+                  Join the <span className="text-gold">Waitlist</span>
+                </h3>
+                <p className="font-sans text-xl text-gray-400 mb-2">
+                  Be among the first to experience Obscene Maids
+                </p>
+                <p className="font-sans text-sm text-gray-500">
+                  First 100 clients get 20% off • Launching February 2025
+                </p>
+              </div>
+
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div>
+                  <input
+                    type="email"
+                    placeholder="Email address *"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    className="w-full px-6 py-4 rounded-xl font-sans text-base"
+                  />
+                </div>
+
+                <div>
+                  <input
+                    type="text"
+                    placeholder="City / Neighborhood *"
+                    value={city}
+                    onChange={(e) => setCity(e.target.value)}
+                    required
+                    className="w-full px-6 py-4 rounded-xl font-sans text-base"
+                  />
+                </div>
+
+                <div>
+                  <select
+                    value={income}
+                    onChange={(e) => setIncome(e.target.value)}
+                    className="w-full px-6 py-4 rounded-xl font-sans text-base"
+                  >
+                    <option value="">Household income (optional)</option>
+                    <option value="250k-500k">$250K - $500K</option>
+                    <option value="500k-1m">$500K - $1M</option>
+                    <option value="1m+">$1M+</option>
+                  </select>
+                </div>
+
+                <div>
+                  <select
+                    value={frequency}
+                    onChange={(e) => setFrequency(e.target.value)}
+                    className="w-full px-6 py-4 rounded-xl font-sans text-base"
+                  >
+                    <option value="">How often would you use this?</option>
+                    <option value="weekly">Weekly</option>
+                    <option value="biweekly">Bi-weekly</option>
+                    <option value="monthly">Monthly</option>
+                    <option value="occasional">Special occasions</option>
+                  </select>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full gold-gradient text-black font-sans text-lg font-bold py-4 rounded-xl hover:shadow-2xl hover:shadow-gold/50 transition-all duration-300 disabled:opacity-50 shimmer"
+                >
+                  {isSubmitting ? 'Joining...' : 'Join Exclusive Waitlist'}
+                </button>
+
+                <p className="font-sans text-xs text-gray-500 text-center">
+                  We respect your privacy. Unsubscribe anytime. Your data is encrypted and never shared.
+                </p>
+              </form>
+            </>
+          ) : (
+            <div className="text-center animate-fade-in">
+              <div className="w-20 h-20 gold-gradient rounded-full flex items-center justify-center mx-auto mb-8">
+                <Check className="w-12 h-12 text-black" />
+              </div>
+              <h3 className="font-serif text-4xl font-bold text-white mb-4">
+                Welcome to the List
+              </h3>
+              <p className="font-sans text-xl text-gray-400 mb-6">
+                You're officially on the waitlist!
+              </p>
+              <div className="bg-gradient-to-br from-gray-900 to-black border border-gold/30 rounded-2xl p-8 mb-8">
+                <div className="font-sans text-sm text-gray-400 mb-2">
+                  Your Position
+                </div>
+                <div className="font-serif text-6xl font-bold text-gold mb-4">
+                  #{waitlistCount}
+                </div>
+                <p className="font-sans text-sm text-gray-400">
+                  We'll email you when booking opens (February 15, 2025)
+                </p>
+              </div>
+              <div className="space-y-4">
+                <p className="font-sans text-base text-gray-300">
+                  Want to skip the line?
+                </p>
+                <button className="gold-gradient text-black font-sans text-base font-bold px-8 py-3 rounded-full hover:shadow-xl transition-all duration-300">
+                  Share Your Referral Link
+                </button>
+                <p className="font-sans text-xs text-gray-500">
+                  Both you and your friend move up the waitlist when they join
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* Social Proof / Trust Section */}
+      <section className="py-24 bg-gradient-to-b from-black via-gray-900 to-black">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <h3 className="font-serif text-4xl md:text-5xl font-bold text-white mb-8">
+              Built for <span className="text-gold">Vegas Executives</span>
+            </h3>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-12">
+            <div className="text-center">
+              <div className="text-5xl font-bold text-gold mb-4">100%</div>
+              <div className="font-sans text-lg text-gray-300">Legal & Licensed</div>
+              <p className="font-sans text-sm text-gray-500 mt-2">
+                Fully compliant with Nevada regulations
+              </p>
+            </div>
+            <div className="text-center">
+              <div className="text-5xl font-bold text-gold mb-4">24/7</div>
+              <div className="font-sans text-lg text-gray-300">Support Available</div>
+              <p className="font-sans text-sm text-gray-500 mt-2">
+                Real humans, immediate assistance
+              </p>
+            </div>
+            <div className="text-center">
+              <div className="text-5xl font-bold text-gold mb-4">&lt;60s</div>
+              <div className="font-sans text-lg text-gray-300">Booking Time</div>
+              <p className="font-sans text-sm text-gray-500 mt-2">
+                Book online in under a minute
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="py-24 bg-black">
+        <div className="max-w-4xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <h3 className="font-serif text-5xl font-bold text-white mb-4">
+              Questions & <span className="text-gold">Answers</span>
+            </h3>
+          </div>
+
+          <div className="space-y-6">
+            {[
+              {
+                q: 'Is this legal?',
+                a: 'Yes. Obscene Maids is a fully licensed and insured business operating in compliance with Nevada adult entertainment regulations. This is topless cleaning service - legal, professional, and strictly cleaning-focused.'
+              },
+              {
+                q: 'How does booking work?',
+                a: 'Book online in under 60 seconds. Choose your preferred time, pay securely with credit card, and receive confirmation instantly. No phone calls required.'
+              },
+              {
+                q: 'Are contractors background-checked?',
+                a: 'Yes. Every contractor undergoes comprehensive national background checks, including criminal records and sex offender registry verification before approval.'
+              },
+              {
+                q: 'What about privacy?',
+                a: 'Your privacy is guaranteed. All contractors sign NDAs. We enforce a strict no-camera policy (violation = lifetime ban). All data is encrypted and never shared.'
+              },
+              {
+                q: 'Can I cancel?',
+                a: 'Yes. Cancel anytime with 24-hour notice at no charge. Cancellations under 24 hours incur a $50 fee.'
+              },
+              {
+                q: 'What if I\'m not satisfied?',
+                a: 'We offer a money-back guarantee on your first booking. If you\'re not completely satisfied, we\'ll refund you in full.'
+              }
+            ].map((faq, index) => (
+              <details 
+                key={index}
+                className="bg-gradient-to-br from-gray-900 to-black border border-gold/20 rounded-xl p-6 hover:border-gold/40 transition-all duration-300"
+              >
+                <summary className="font-sans text-lg font-semibold text-white cursor-pointer">
+                  {faq.q}
+                </summary>
+                <p className="font-sans text-gray-400 mt-4 leading-relaxed">
+                  {faq.a}
+                </p>
+              </details>
+            ))}
+          </div>
+
+          <div className="text-center mt-12">
+            <p className="font-sans text-gray-400 mb-4">
+              More questions?
+            </p>
+            <a 
+              href="mailto:info@obscenemaids.com" 
+              className="text-gold hover:text-gold/80 font-sans font-medium transition-colors"
+            >
+              info@obscenemaids.com
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* Final CTA Section */}
+      <section className="py-24 bg-gradient-to-b from-black to-gray-900 grain">
+        <div className="max-w-4xl mx-auto px-6 text-center">
+          <div className="w-24 h-1 gold-gradient mx-auto mb-8"></div>
+          <h3 className="font-serif text-5xl md:text-6xl font-bold text-white mb-6">
+            Your Time Starts <span className="text-gold">Now</span>
+          </h3>
+          <p className="font-sans text-xl text-gray-400 mb-12 max-w-2xl mx-auto">
+            Join {waitlistCount.toLocaleString()} others on the waitlist for Vegas' most exclusive cleaning service
+          </p>
+          <a 
+            href="#waitlist" 
+            className="inline-block gold-gradient text-black font-sans text-lg font-bold px-12 py-4 rounded-full hover:shadow-2xl hover:shadow-gold/50 transition-all duration-300 shimmer"
+          >
+            Join Waitlist Now
+          </a>
+          <p className="font-sans text-sm text-gray-500 mt-6">
+            Launching February 2025 • Limited to first 100 clients
+          </p>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-black border-t border-gold/20 py-12">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="flex flex-col md:flex-row items-center justify-between space-y-6 md:space-y-0">
+            <div className="flex items-center space-x-3">
+              <div className="w-8 h-8 gold-gradient rounded-full flex items-center justify-center">
+                <Star className="w-5 h-5 text-black" />
+              </div>
+              <span className="font-serif text-xl font-bold text-gold">
+                OBSCENE MAIDS
+              </span>
+            </div>
+            
+            <div className="font-sans text-sm text-gray-500 text-center">
+              <p>© 2025 RealE Technology Solutions LLC. All rights reserved.</p>
+              <p className="mt-1">Licensed & Insured Business | Adults 18+ Only</p>
+            </div>
+            
+            <div className="flex space-x-6">
+              <a href="#" className="font-sans text-sm text-gray-400 hover:text-gold transition-colors">
+                Privacy
+              </a>
+              <a href="#" className="font-sans text-sm text-gray-400 hover:text-gold transition-colors">
+                Terms
+              </a>
+              <a href="/contractors" className="font-sans text-sm text-gray-400 hover:text-gold transition-colors">
+                Work With Us
+              </a>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+}
