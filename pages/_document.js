@@ -6,12 +6,11 @@ export default function Document() {
       <Head>
         {/* Primary Meta Tags */}
         <meta name="title" content="Premium Cleaning Service Las Vegas | Licensed & Insured | Obscene Maids" />
-        <meta name="description" content="Professional cleaning service in Las Vegas. Licensed, insured, background-checked contractors. Unique approach to luxury home services. Book online. Adults 18+." />
-        <meta name="keywords" content="cleaning service las vegas, premium cleaning vegas, professional cleaning, luxury home services, topless cleaning service, licensed cleaning vegas" />
+        <meta name="description" content="Professional cleaning service in Las Vegas. Licensed, insured, background-checked contractors. Unique approach to luxury home services. Book online today." />
+        <meta name="keywords" content="cleaning service las vegas, premium cleaning vegas, professional cleaning, luxury home services, licensed cleaning vegas" />
         <meta name="robots" content="index, follow" />
         <meta name="language" content="English" />
         <meta name="author" content="Obscene Maids" />
-        <meta name="rating" content="adult" />
         
         {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
